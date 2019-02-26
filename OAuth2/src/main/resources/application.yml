@@ -1,0 +1,9 @@
+server:
+  port: 9000
+
+spring:
+  datasource:
+    url: jdbc:mariadb://sl-us-south-1-portal.53.dblayer.com:17879/oauth2
+    username: admin
+    password: VDQGIAWFJENCYCVG
+    driver-class-name: org.mariadb.jdbc.Driver
