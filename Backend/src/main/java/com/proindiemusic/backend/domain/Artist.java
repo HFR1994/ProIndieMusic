@@ -19,16 +19,16 @@ public class Artist extends Entity {
     @Email
     private String email;
     private String shandraw;
-    private URI photo;
+    private String photo;
     private Float trayectory;
     private Float costPerPresentation;
     private Integer internationalConcerts;
     private Integer concertsPerYear;
     private Float attendancePerConcert;
     private Float socialMediaFollowUp;
-    private URI liveVideo;
-    private URI studioVideo;
-    private URI pressKit;
+    private String liveVideo;
+    private String studioVideo;
+    private String pressKit;
 
     @Administrator
     private String level;
@@ -45,6 +45,38 @@ public class Artist extends Entity {
     @Administrator
     private String step3;
 
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getLiveVideo() {
+        return liveVideo;
+    }
+
+    public void setLiveVideo(String liveVideo) {
+        this.liveVideo = liveVideo;
+    }
+
+    public String getStudioVideo() {
+        return studioVideo;
+    }
+
+    public void setStudioVideo(String studioVideo) {
+        this.studioVideo = studioVideo;
+    }
+
+    public String getPressKit() {
+        return pressKit;
+    }
+
+    public void setPressKit(String pressKit) {
+        this.pressKit = pressKit;
+    }
 
     public String getBandName() {
         return bandName;
@@ -68,14 +100,6 @@ public class Artist extends Entity {
 
     public void setShandraw(String shandraw) {
         this.shandraw = shandraw;
-    }
-
-    public String getPhoto() {
-        return photo.toString();
-    }
-
-    public void setPhoto(String photo) throws URISyntaxException {
-        this.photo = new URI(photo);
     }
 
     public Float getTrayectory() {
@@ -124,30 +148,6 @@ public class Artist extends Entity {
 
     public void setSocialMediaFollowUp(Float socialMediaFollowUp) {
         this.socialMediaFollowUp = socialMediaFollowUp;
-    }
-
-    public String getLiveVideo() {
-        return liveVideo.toString();
-    }
-
-    public void setLiveVideo(String liveVideo) throws URISyntaxException {
-        this.liveVideo = new URI(liveVideo);
-    }
-
-    public String getStudioVideo() {
-        return studioVideo.toString();
-    }
-
-    public void setStudioVideo(String studioVideo) throws URISyntaxException {
-        this.studioVideo = new URI(studioVideo);
-    }
-
-    public String getPressKit() {
-        return pressKit.toString();
-    }
-
-    public void setPressKit(String pressKit) throws URISyntaxException {
-        this.pressKit = new URI(pressKit);
     }
 
     public String getLevel() {
@@ -208,4 +208,30 @@ public class Artist extends Entity {
 
     @Override
     public Class findDomainClass() { return Artist.class; }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "bandName='" + bandName + '\'' +
+                ", email='" + email + '\'' +
+                ", shandraw='" + shandraw + '\'' +
+                ", photo='" + photo + '\'' +
+                ", trayectory=" + trayectory +
+                ", costPerPresentation=" + costPerPresentation +
+                ", internationalConcerts=" + internationalConcerts +
+                ", concertsPerYear=" + concertsPerYear +
+                ", attendancePerConcert=" + attendancePerConcert +
+                ", socialMediaFollowUp=" + socialMediaFollowUp +
+                ", liveVideo='" + liveVideo + '\'' +
+                ", studioVideo='" + studioVideo + '\'' +
+                ", pressKit='" + pressKit + '\'' +
+                ", level='" + level + '\'' +
+                ", sublevel=" + sublevel +
+                ", completeness=" + completeness +
+                ", review='" + review + '\'' +
+                ", step1='" + step1 + '\'' +
+                ", step2='" + step2 + '\'' +
+                ", step3='" + step3 + '\'' +
+                '}';
+    }
 }

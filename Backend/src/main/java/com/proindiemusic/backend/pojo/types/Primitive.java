@@ -60,11 +60,14 @@ public class Primitive {
         }else if(double.class.equals(type) || Double.class.equals(type)){
             return Double.parseDouble(value.toString());
         }else if(short.class.equals(type) || Short.class.equals(type)){
-            return Short.parseShort(value.toString());
+            Double d = Double.parseDouble(value.toString());
+            return d.shortValue();
         }else if(int.class.equals(type) || Integer.class.equals(type)){
-            return Integer.parseInt(value.toString());
+            Double d = Double.parseDouble(value.toString());
+            return d.intValue();
         }else if(long.class.equals(type) || Long.class.equals(type)){
-            return Long.parseLong(value.toString());
+            Double d = Double.parseDouble(value.toString());
+            return d.longValue();
         }else if(boolean.class.equals(type) || Boolean.class.equals(type)){
             return Boolean.parseBoolean(value.toString());
         }else if(java.util.Date.class.equals(type) || java.sql.Date.class.equals(type)){
@@ -72,7 +75,7 @@ public class Primitive {
         }else if(java.sql.Timestamp.class.equals(type)){
             return dateTime.parse(value.toString());
         }else{
-            return value;
+            return value.toString();
         }
     }
 

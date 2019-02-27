@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -108,7 +109,7 @@ public class GoogleOAuth2Filter{
         return null;
     }
 
-    public void authorizationCode(HttpServletRequest request, HttpServletResponse response, String cred){
+    public void authorizationCode(HttpServletRequest request, HttpServletResponse response, String cred, ArrayList<String> scopes){
         Map<String, String[]> query = request.getParameterMap();
         CommonTools.eraseCookies(response, request.getCookies());
 
@@ -183,18 +184,13 @@ public class GoogleOAuth2Filter{
                                 auth.setStatus(true);
                                 auth.setExpired(false);
                                 auth.setLocked(false);
-                                auth.setRoles("USER");
                                 auth.setDateCreated(calendar.getTime());
                                 auth.setClientUuid(cred);
 
                                 auth.setDateModified(Calendar.getInstance().getTime());
 
-                                if (auth.getEmail().equalsIgnoreCase("frhectorin@gmail.com")) {
-                                    auth.setRoles("ADMIN");
-                                } else if (!auth.getEmail().contains("@celulascontentas")) {
-                                    auth.setStatus(false);
-                                    auth.setLocked(true);
-                                    auth.resetRoles();
+                                for(String scope : scopes){
+                                    auth.setRoles(scope.trim());
                                 }
 
                                 auth.setAccessToken(new RandomString(79).nextString());
@@ -241,22 +237,17 @@ public class GoogleOAuth2Filter{
                                 auth.setStatus(true);
                                 auth.setExpired(false);
                                 auth.setLocked(false);
-                                auth.setRoles("USER");
                                 auth.setDateCreated(calendar.getTime());
                                 auth.setClientUuid(cred);
                                 auth.setDateModified(Calendar.getInstance().getTime());
 
-                                if (auth.getEmail().equalsIgnoreCase("frhectorin@gmail.com")) {
-                                    auth.setRoles("ADMIN");
-                                } else if (!auth.getEmail().contains("@celulascontentas")) {
-                                    auth.setStatus(false);
-                                    auth.setLocked(true);
-                                    auth.resetRoles();
+                                for(String scope : scopes){
+                                    auth.setRoles(scope.trim());
                                 }
 
                                 auth.setAccessToken(new RandomString(79).nextString());
-
                                 auth.setRefreshToken(new RandomString(40).nextString());
+
                                 calendar = Calendar.getInstance();
                                 calendar.add(Calendar.SECOND, ACCESS_TOKEN);
                                 auth.setExpirationDate(calendar.getTime());

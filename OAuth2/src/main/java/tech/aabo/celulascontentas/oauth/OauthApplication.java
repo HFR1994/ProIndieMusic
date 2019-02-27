@@ -43,9 +43,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -101,6 +103,19 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
             String grant_type = query.get("grant_type")[0];
             String client_id = query.get("client_id")[0];
             String client_secret = query.get("client_secret")[0];
+            ArrayList<String> scopes;
+
+            if(query.containsKey("scope")){
+                scopes = new ArrayList<>(Arrays.asList(query.get("scope")));
+                if(scopes.size() == 0) {
+                    scopes.add("USER");
+                }else if (!scopes.contains("USER")) {
+                    scopes.add("USER");
+                }
+            }else{
+                scopes = new ArrayList<>();
+                scopes.add("USER");
+            }
 
             Client cred = commonTools.validateCredentials(response, client_id, client_secret);
 
@@ -115,7 +130,7 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
                             case "authorization_code":
                                 Result<String> redirect_uri = clientDao.validateRedirect(cred.getUuid(), query.get("redirect_uri")[0]);
                                 if(redirect_uri.getData() != null) {
-                                    googleOAuth2Filter.authorizationCode(request, response, cred.getUuid());
+                                    googleOAuth2Filter.authorizationCode(request, response, cred.getUuid(), scopes);
                                 }else{
                                     CommonTools.setResponse(response, redirect_uri.getMessage(), redirect_uri.getCode());
                                 }
@@ -445,7 +460,6 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
                 user.setGivenName(query.get("firstName")[0]);
                 user.setFamilyName(query.get("lastName")[0]);
 
-
                 Result<Boolean> res = userDao.insertUser(user);
 
                 if (res.getData() == null) {
@@ -459,15 +473,23 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
                         Result resl = userAuthorizationDao.updatePssword(email, password);
 
                         if(resl.getCode() == HttpServletResponse.SC_OK) {
-                            PrintWriter out = response.getWriter();
+
+                            JSONObject map = new JSONObject();
+                            map.put("uuid", user.getUserUuid());
+                            map.put("name", user.getName());
+                            map.put("firstName", user.getGivenName());
+                            map.put("lastName", user.getFamilyName());
+                            map.put("email", user.getEmail());
+                            map.put("picture", user.getPictureURL());
+                            map.put("locale", user.getLocale());
+                            map.put("status", true);
 
                             response.setContentType("application/json");
                             response.setCharacterEncoding("utf-8");
-                            response.setStatus(HttpServletResponse.SC_OK);
+                            response.setStatus(user.getStatus() ? HttpServletResponse.SC_OK : HttpServletResponse.SC_UNAUTHORIZED);
+                            PrintWriter out = response.getWriter();
 
-                            //create Json Object
-                            JSONObject values = new JSONObject(user.toString());
-                            out.print(values.toString());
+                            out.print(map.toString());
                         }else{
                             response.setContentType("application/json");
                             response.setCharacterEncoding("utf-8");

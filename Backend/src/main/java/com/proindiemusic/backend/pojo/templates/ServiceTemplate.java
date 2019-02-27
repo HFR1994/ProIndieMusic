@@ -1,5 +1,7 @@
 package com.proindiemusic.backend.pojo.templates;
 
+import com.proindiemusic.backend.domain.Entity;
+import com.proindiemusic.backend.domain.Media;
 import com.proindiemusic.backend.domain.User;
 import com.proindiemusic.backend.pojo.CommonTools;
 import com.proindiemusic.backend.pojo.Result;
@@ -18,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-@SuppressWarnings("Duplicates")
+@SuppressWarnings({"Duplicates", "unchecked"})
 public abstract class ServiceTemplate<T> {
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -75,12 +77,52 @@ public abstract class ServiceTemplate<T> {
             List<Map<String, Object>> list = new ArrayList<>();
 
             for(T klazz : results){
-                list.add(CommonTools.mapPOJO(klazz.getClass()));
+                list.add(CommonTools.mapPOJO((Entity) klazz));
             }
 
             result.setData(list);
             result.setCode(Result.CREATED);
-            result.setMessage("¡Genial! Se agregaron exitosamente los datos");
+            result.setMessage("¡Genial! Se cargaron exitosamente los datos");
+        } else {
+            result.setCode(Result.INTERNAL_SERVER_ERROR);
+            result.setMessage("¡Ups! Hubo un error por favor contacta a tu administrador");
+        }
+
+        return result;
+
+    }
+
+    public Result getAll(String artist) throws IOException {
+
+        Result result = new Result();
+        Optional<List<T>> val = Objects.requireNonNull(getDao()).getAll(artist);
+
+        if(val.isPresent()){
+            List<T> results = val.get();
+            for(T klazz : results) {
+                Set<Field> fields = findFields(klazz.getClass(), Password.class);
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    try {
+                        PropertyUtils.setSimpleProperty(klazz, field.getName(), null);
+                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                        e.printStackTrace();
+                        result.setCode(Result.INTERNAL_SERVER_ERROR);
+                        result.setMessage("¡Ups! Hubo un error por favor contacta a tu administrador");
+                        return result;
+                    }
+                }
+            }
+
+            List<Map<String, Object>> list = new ArrayList<>();
+
+            for(T klazz : results){
+                list.add(CommonTools.mapPOJO((Entity) klazz));
+            }
+
+            result.setData(list);
+            result.setCode(Result.CREATED);
+            result.setMessage("¡Genial! Se cargaron exitosamente los datos");
         } else {
             result.setCode(Result.INTERNAL_SERVER_ERROR);
             result.setMessage("¡Ups! Hubo un error por favor contacta a tu administrador");
@@ -93,6 +135,24 @@ public abstract class ServiceTemplate<T> {
     public Optional<T> getByUuid(String uuid) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
 
         Optional<T> val = Objects.requireNonNull(getDao()).getByUuid(uuid);
+
+        if(val.isPresent()) {
+            T clase = val.get();
+
+            Set<Field> fields = findFields(clase.getClass(), Password.class);
+            for (Field field : fields) {
+                field.setAccessible(true);
+                PropertyUtils.setSimpleProperty(clase, field.getName(), null);
+            }
+        }
+
+        return val;
+
+    }
+
+    public Optional<T> getByUuid(String artist, String uuid) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
+
+        Optional<T> val = Objects.requireNonNull(getDao()).getByUuid(artist, uuid);
 
         if(val.isPresent()) {
             T clase = val.get();
@@ -127,7 +187,13 @@ public abstract class ServiceTemplate<T> {
                 HashMap<String, Object> val = new HashMap<>();
                 String name = field.getName().substring(0, 1).toLowerCase() + field.getName().substring(1);
 
-                Object value = PropertyUtils.getProperty(klazz, field.getName());
+                Object value;
+                try {
+                    value  = PropertyUtils.getProperty(klazz, field.getName());
+                }catch (InvocationTargetException e){
+                    PropertyUtils.setSimpleProperty(klazz, field.getName(), null);
+                    value = null;
+                }
 
                 HashSet<String> error = new HashSet<>();
 
@@ -149,35 +215,35 @@ public abstract class ServiceTemplate<T> {
                                 case "Email":
                                     matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(value.toString());
                                     if (!matcher.find()) {
-                                        error.add(" no es valido");
+                                        error.add("No es valido");
                                     }
                                     break;
                                 case "Password":
                                     matcher = VALID_PASSWORD_VALIDATION.matcher(value.toString());
                                     if (!matcher.find()) {
-                                        error.add(" debe:\n\tTener 8 Letras\n\tUna letra mayúscula\n\tUna letra minúscula\n\tUn caracter especial\n\tNo debe tener espacios o saltos de página");
+                                        error.add("Debe:\n\tTener 8 Letras\n\tUna letra mayúscula\n\tUna letra minúscula\n\tUn caracter especial\n\tNo debe tener espacios o saltos de página");
                                     }
                                     break;
                                 case "Date":
                                     matcher = VALID_DATE_VALIDATION.matcher(value.toString());
                                     if (matcher.find()) {
-                                        error.add(" debe ir en formato yyyy-mm-dd");
+                                        error.add("Debe ir en formato yyyy-mm-dd");
                                     }
                                     break;
                                 case "DateTime":
                                     matcher = VALID_DATETIME_VALIDATION.matcher(value.toString());
                                     if (matcher.find()) {
-                                        error.add(" debe ir en formato ISO 8601");
+                                        error.add("Debe ir en formato ISO 8601");
                                     }
                                     break;
                                 case "Administrator":
-                                    if (!user.hasRole("administrator")) {
-                                        error.add(" el usuario "+user.getEmail()+" no tiene permisos de administrador");
+                                    if (!user.hasRole("ADMIN") || value != null) {
+                                        error.add("El usuario "+user.getEmail()+" no tiene permisos de administrador");
                                     }
                                     break;
                                 case "Required":
                                     if (value == null || value.toString().trim().length() == 0) {
-                                        error.add(" no debe estar vacio");
+                                        error.add("No debe estar vacio");
                                     }
                                     break;
                                 default:
@@ -207,6 +273,30 @@ public abstract class ServiceTemplate<T> {
                 datos.put(name, val);
 
             }
+
+            HashMap<String, Object> properties = (HashMap<String, Object>) PropertyUtils.getProperty(klazz, "additionalProperties");
+
+            if(var.isPresent()){
+                HashMap<String, Object> current = (HashMap<String, Object>) PropertyUtils.getProperty(var.get(), "additionalProperties");
+
+                for (Map.Entry<String, Object> entry : properties.entrySet()) {
+                    HashMap<String, Object> val = new HashMap<>();
+                    val.put("changed", current.get(entry.getKey()) == entry.getValue());
+                    val.put("value", entry.getValue());
+                    val.put("error", new HashSet<>());
+                    datos.put(entry.getKey(), val);
+                }
+
+            }else{
+                for (Map.Entry<String, Object> entry : properties.entrySet()) {
+                    HashMap<String, Object> val = new HashMap<>();
+                    val.put("changed", true);
+                    val.put("value", entry.getValue());
+                    val.put("error", new HashSet<>());
+                    datos.put(entry.getKey(), val);
+                }
+            }
+
         }
         return datos;
     }
@@ -241,7 +331,7 @@ public abstract class ServiceTemplate<T> {
             T klazz = mapper.get();
 
             try {
-                PropertyUtils.setSimpleProperty(klazz, "_user", user.getUuid());
+                PropertyUtils.setSimpleProperty(klazz, "userAuth", user.getUuid());
                 if (klazz.getClass() != null) {
                     HashMap<String, HashMap<String, Object>> datos;
                     try {
@@ -306,7 +396,7 @@ public abstract class ServiceTemplate<T> {
             T klazz = mapper.get();
 
             try {
-                PropertyUtils.setSimpleProperty(klazz, "_user", user.getUuid());
+                PropertyUtils.setSimpleProperty(klazz, "userAuth", user.getUuid());
                 if(klazz.getClass() != null) {
                     Optional<Boolean> object;
                     try {
@@ -359,7 +449,7 @@ public abstract class ServiceTemplate<T> {
 
 
             try {
-                PropertyUtils.setSimpleProperty(klazz, "_user", user.getUuid());
+                PropertyUtils.setSimpleProperty(klazz, "userAuth", user.getUuid());
 
                 if(klazz.getClass() != null) {
 
@@ -444,5 +534,4 @@ public abstract class ServiceTemplate<T> {
         }
         return set;
     }
-
 }

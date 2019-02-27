@@ -1,8 +1,8 @@
 package com.proindiemusic.backend.pojo;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.proindiemusic.backend.domain.Entity;
 import com.proindiemusic.backend.domain.User;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -16,9 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -175,13 +178,33 @@ public class CommonTools {
         return (User) user.getPrincipal();
     }
 
-    public static Map<String, Object> mapPOJO(Class<?> data){
-        // Create ObjectMapper instance
-        ObjectMapper mapper = new ObjectMapper();
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> mapPOJO(Entity klazz){
 
-        // Converting POJO to Map
-        return mapper.convertValue(data, new TypeReference<Map<String, Object>>() {});
+        String[] prohibited = {"_id","_rev", "password"};
+        HashMap<String, Object> data = new HashMap<>();
+        Field[] fields = klazz.getClass().getDeclaredFields();
+        Field[] superField = klazz.getClass().getSuperclass().getDeclaredFields();
 
+        ArrayList<Field> allFields = new ArrayList<>(Arrays.asList(fields));
+
+        allFields.addAll(Arrays.asList(superField));
+
+        try {
+            for (Field field : allFields) {
+                field.setAccessible(true);
+                String name = field.getName().substring(0, 1).toLowerCase() + field.getName().substring(1);
+                if (name.equalsIgnoreCase("additionalProperties")) {
+                    data.putAll(klazz.getProperties());
+                }else if(!Arrays.asList(prohibited).contains(name)) {
+                    data.put(name, PropertyUtils.getProperty(klazz, name));
+                }
+            }
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        return data;
     }
 
     public static void printSmt(String sql, Object[] objects){

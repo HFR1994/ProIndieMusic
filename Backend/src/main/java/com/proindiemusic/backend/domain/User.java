@@ -84,7 +84,7 @@ public class User extends Entity implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "{" +
                 "locale='" + locale + '\'' +
                 ", gAccessToken='" + gAccessToken + '\'' +
                 ", accessToken='" + accessToken + '\'' +
@@ -138,8 +138,6 @@ public class User extends Entity implements UserDetails {
     public Class findDomainClass() {
         return User.class;
     }
-
-
 
 }
 

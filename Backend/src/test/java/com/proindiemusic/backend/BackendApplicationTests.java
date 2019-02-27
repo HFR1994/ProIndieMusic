@@ -4,16 +4,20 @@ import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
 import com.cloudant.client.api.model.Document;
+import com.cloudant.client.api.query.JsonIndex;
 import com.cloudant.client.api.query.QueryBuilder;
 import com.cloudant.client.api.query.QueryResult;
+import com.cloudant.client.api.query.Sort;
 import com.cloudant.client.api.views.Key;
 import com.cloudant.client.api.views.ViewResponse;
 import com.google.gson.JsonObject;
 import com.proindiemusic.backend.config.CloudantConfigurator;
+import com.proindiemusic.backend.domain.Media;
 import com.proindiemusic.backend.domain.Prueba;
 import com.proindiemusic.backend.domain.User;
 import com.proindiemusic.backend.pojo.templates.DaoTemplate;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.eclipse.jetty.util.IO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,15 +71,13 @@ public class BackendApplicationTests {
 
         db = account.database("proindiemusic", true);
 
-        /*//Create indexes
-        db.createIndex(JsonIndex.builder().name("Person_name")
-                .designDocument("Person_name")
-                .asc("Person_name", "Movie_year")
-                .definition());
-        db.createIndex(JsonIndex.builder().name("Movie_year")
-                .designDocument("Movie_year")
-                .asc("Movie_year")
-                .definition());*/
+        if(db.listIndexes().jsonIndexes().size() > 0) {
+            //Create indexes
+            db.createIndex(JsonIndex.builder().name("ArtistUuid")
+                    .designDocument("ArtistUuid")
+                    .asc("artistUuid")
+                    .definition());
+        }
     }
 
     @Test
@@ -84,8 +86,21 @@ public class BackendApplicationTests {
         List<HashMap> result = db.getViewRequestBuilder("groupType", "type-group").newRequest(Key
                 .Type.STRING, Object.class).keys("prueba").reduce(false).includeDocs(true).build().getResponse().getDocsAs(HashMap.class);
 
+        db.listIndexes().allIndexes();
+
         System.out.println(result);
 
+    }
+
+    @Test
+    public void uploadCredentials() throws IOException{
+        QueryResult<Media> movies = db.query(new QueryBuilder(eq("artistUuid", "f5463dca-a7cf-4a25-88e5-8ad74fe8005c")).
+                        useIndex("ArtistUuid", "artistUuid").
+                        limit(1).
+                        build(),
+                Media.class);
+
+        System.out.println(movies);
     }
 
     @Test
@@ -100,7 +115,6 @@ public class BackendApplicationTests {
 
         Prueba entidad = new Prueba();
 
-        entidad.setType(null);
         entidad.setDateCreated(new Date());
         entidad.setDateModified(new Date());
         entidad.setStatus(true);

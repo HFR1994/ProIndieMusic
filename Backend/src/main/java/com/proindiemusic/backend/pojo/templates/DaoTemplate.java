@@ -2,6 +2,8 @@ package com.proindiemusic.backend.pojo.templates;
 
 import com.cloudant.client.api.Database;
 import com.cloudant.client.api.model.Response;
+import com.cloudant.client.api.query.QueryBuilder;
+import com.cloudant.client.api.query.QueryResult;
 import com.cloudant.client.api.views.Key;
 import com.proindiemusic.backend.domain.Entity;
 import com.proindiemusic.backend.pojo.CommonTools;
@@ -19,6 +21,9 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.cloudant.client.api.query.Expression.eq;
+import static com.cloudant.client.api.query.Operation.and;
 
 @SuppressWarnings({"Duplicates", "unchecked", "ConstantConditions"})
 public abstract class DaoTemplate<T>{
@@ -40,6 +45,18 @@ public abstract class DaoTemplate<T>{
 
         HashMap<String, Object> miclase = db.find(HashMap.class, uuid);
         return objectMapper(miclase);
+    }
+
+    public Optional<T> getByUuid(String artist, String uuid){
+
+        QueryResult<HashMap> data = db.query(new QueryBuilder(and(
+                eq("artistUuid", artist),
+                eq("_id", uuid))).
+                limit(1).
+                build(),
+                HashMap.class);
+
+        return objectMapper(data.getDocs().get(0));
     }
 
     public Optional<T> objectMapper(HashMap<String, Object> data){
@@ -75,7 +92,7 @@ public abstract class DaoTemplate<T>{
                                     PropertyUtils.setSimpleProperty(clase, cursor.getKey(), Primitive.getType(Date.class, cursor.getValue()));
                                     break;
                                 } else {
-                                    PropertyUtils.setSimpleProperty(clase, cursor.getKey(), current.getType());
+                                    PropertyUtils.setSimpleProperty(clase, cursor.getKey(), Primitive.getType(current.getType(), cursor.getValue()));
                                 }
                             }
                         }
@@ -114,32 +131,58 @@ public abstract class DaoTemplate<T>{
     }
 
 
+    public Optional<List<T>> getAll(String artist) throws IOException {
+
+        String value = Primitive.getDBName(domainClass().getSimpleName());
+
+        QueryResult<HashMap> results = db.query(new QueryBuilder(and(
+                eq("artistUuid", artist),
+                eq("table", value))).
+                        build(),
+                HashMap.class);
+
+        List<T> datos = new ArrayList<>();
+
+        for(HashMap result : results.getDocs()){
+            Optional<T> val = objectMapper(result);
+            if(val.isPresent()){
+                datos.add(val.get());
+            }else{
+                return Optional.empty();
+            }
+        }
+
+        return Optional.of(datos);
+    }
+
+
     public Optional<T> insert(T klazz) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
         String value = Primitive.getDBName(klazz.getClass().getSimpleName());
 
         PropertyUtils.setSimpleProperty(klazz, "uuid",null);
-        String user = PropertyUtils.getProperty(klazz, "_user").toString();
+        String user = PropertyUtils.getProperty(klazz, "userAuth").toString();
 
         String newUuid = UUID.randomUUID().toString();
         HashMap<String, Object> data = new HashMap<>();
         Field[] fields = klazz.getClass().getDeclaredFields();
         data.put("_id", newUuid);
-        data.put("_user", user);
-        data.put("type", value);
+        data.put("userAuth", user);
+        data.put("table", value);
 
         for (Field field : fields) {
             field.setAccessible(true);
-
             String name = field.getName().substring(0, 1).toLowerCase() + field.getName().substring(1);
-
-            if (name.equalsIgnoreCase("additionalProperties")) {
-                data.putAll(((Entity) klazz).getProperties());
-            } else {
-                data.put(name, PropertyUtils.getProperty(klazz, name));
-            }
-
+            data.put(name, PropertyUtils.getProperty(klazz, name));
         }
+
+        HashMap<String, Object> properties = (HashMap<String, Object>) PropertyUtils.getProperty(klazz, "additionalProperties");
+
+        for (Map.Entry<String, Object> entry : properties.entrySet()) {
+            data.put(entry.getKey(), entry.getValue());
+        }
+
+
         data.put("status", true);
         data.put("dateCreated", dateTime.format(new Date()));
         data.put("dateModified", dateTime.format(new Date()));
@@ -179,14 +222,14 @@ public abstract class DaoTemplate<T>{
         String value = Primitive.getDBName(klazz.getClass().getSimpleName());
         String uuid = PropertyUtils.getProperty(klazz, "uuid").toString();
         String rev = PropertyUtils.getProperty(klazz, "_rev").toString();
-        String user = PropertyUtils.getProperty(klazz, "_user").toString();
+        String user = PropertyUtils.getProperty(klazz, "userAuth").toString();
 
         HashMap<String, Object> data = new HashMap<>();
         Field[] fields = klazz.getClass().getDeclaredFields();
         data.put("_id", uuid);
         data.put("_rev", rev);
-        data.put("_user", user);
-        data.put("type", value);
+        data.put("userAuth", user);
+        data.put("table", value);
 
         for (Field field : fields) {
             field.setAccessible(true);

@@ -53,7 +53,7 @@ public class Prueba extends Entity {
 
     @Override
     public String toString() {
-        return "Prueba{" +
+        return "{" +
                 "valor='" + valor + '\'' +
                 ", bool=" + bool +
                 ", num=" + num +

@@ -18,7 +18,9 @@ public abstract class Entity<T>{
 
     private Boolean status;
 
-    private String _user;
+    private String userAuth;
+
+    private String table;
 
     @Date
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
@@ -28,16 +30,32 @@ public abstract class Entity<T>{
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     private java.util.Date dateModified;
 
-    private String type;
 
     private HashMap<String, Object> additionalProperties;
 
-    public String get_user() {
-        return _user;
+    public HashMap<String, Object> getAdditionalProperties() {
+        return additionalProperties;
     }
 
-    public void set_user(String _user) {
-        this._user = _user;
+    public void setAdditionalProperties(HashMap<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+    public String getTable() {
+        return table;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
+    }
+
+
+    public String getUserAuth() {
+        return userAuth;
+    }
+
+    public void setUserAuth(String userAuth) {
+        this.userAuth = userAuth;
     }
 
     public String getUuid() {
@@ -80,13 +98,6 @@ public abstract class Entity<T>{
         this.dateModified = dateModified;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public abstract Class<T> findDomainClass();
 
