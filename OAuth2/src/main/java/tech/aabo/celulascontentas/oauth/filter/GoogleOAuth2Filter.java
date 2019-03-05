@@ -204,25 +204,20 @@ public class GoogleOAuth2Filter{
                                 userDao.insertUser(auth);
                                 tokenDao.insertAccessToken(auth);
 
-                                if (auth.getEmail().equalsIgnoreCase("frhectorin@gmail.com") || auth.getEmail().contains("@celulascontentas")) {
-                                    values = new JSONObject();
+                                values = new JSONObject();
 
-                                    values.put("access_token", auth.getAccessToken());
-                                    values.put("token_type", "Bearer");
-                                    values.put("expires_in", String.valueOf((auth.getExpirationDate().getTime() - new Date().getTime()) / 1000));
-                                    values.put("refresh_token", auth.getRefreshToken());
+                                values.put("access_token", auth.getAccessToken());
+                                values.put("token_type", "Bearer");
+                                values.put("expires_in", String.valueOf((auth.getExpirationDate().getTime() - new Date().getTime()) / 1000));
+                                values.put("refresh_token", auth.getRefreshToken());
 
-                                    response.setContentType("application/json");
-                                    response.setCharacterEncoding("utf-8");
-                                    response.setStatus(HttpServletResponse.SC_OK);
+                                response.setContentType("application/json");
+                                response.setCharacterEncoding("utf-8");
+                                response.setStatus(HttpServletResponse.SC_OK);
 
-                                    PrintWriter out = response.getWriter();
+                                PrintWriter out = response.getWriter();
 
-                                    out.print(values.toString());
-                                } else {
-                                    values = new JSONObject();
-                                    CommonTools.setResponse(response, "User is not allowed to access this resource", HttpServletResponse.SC_FORBIDDEN);
-                                }
+                                out.print(values.toString());
 
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -255,25 +250,21 @@ public class GoogleOAuth2Filter{
                                 userDao.insertUser(auth);
                                 tokenDao.insertAccessToken(auth);
 
-                                if (auth.getEmail().equalsIgnoreCase("frhectorin@gmail.com") || auth.getEmail().contains("@celulascontentas")) {
-                                    values = new JSONObject();
+                                values = new JSONObject();
 
-                                    values.put("access_token", auth.getAccessToken());
-                                    values.put("token_type", "Bearer");
-                                    values.put("expires_in", String.valueOf((auth.getExpirationDate().getTime() - new Date().getTime()) / 1000));
-                                    values.put("refresh_token", auth.getRefreshToken());
+                                values.put("access_token", auth.getAccessToken());
+                                values.put("token_type", "Bearer");
+                                values.put("expires_in", String.valueOf((auth.getExpirationDate().getTime() - new Date().getTime()) / 1000));
+                                values.put("refresh_token", auth.getRefreshToken());
 
-                                    response.setContentType("application/json");
-                                    response.setCharacterEncoding("utf-8");
-                                    response.setStatus(HttpServletResponse.SC_OK);
+                                response.setContentType("application/json");
+                                response.setCharacterEncoding("utf-8");
+                                response.setStatus(HttpServletResponse.SC_OK);
 
-                                    PrintWriter out = response.getWriter();
+                                PrintWriter out = response.getWriter();
 
-                                    out.print(values.toString());
-                                } else {
-                                    values = new JSONObject();
-                                    CommonTools.setResponse(response, "User is not allowed to access this resource", HttpServletResponse.SC_FORBIDDEN);
-                                }
+                                out.print(values.toString());
+
                             }else{
                                 CommonTools.setResponse(response, "Authorization code is invalid", HttpServletResponse.SC_BAD_REQUEST);
                             }

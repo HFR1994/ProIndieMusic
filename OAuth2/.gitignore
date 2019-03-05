@@ -10,6 +10,9 @@
 .springBeans
 .sts4-cache
 
+src/main/resources/application-local.properties
+src/main/resources/localdev-config.json
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
