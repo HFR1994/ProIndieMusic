@@ -26,3 +26,5 @@ src/main/resources/localdev-config.json
 /dist/
 /nbdist/
 /.nb-gradle/
+
+.m2/*
