@@ -75,7 +75,7 @@ public class Primitive {
         }else if(java.sql.Timestamp.class.equals(type)){
             return dateTime.parse(value.toString());
         }else{
-            return value.toString();
+            return value;
         }
     }
 

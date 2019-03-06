@@ -13,9 +13,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MediaDao extends DaoTemplate<Media> {
 
+    @Autowired
     private Database db;
 
-    @Autowired
     public MediaDao(Database db) {
         super(db);
     }

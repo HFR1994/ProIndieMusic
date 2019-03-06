@@ -1,0 +1,4 @@
+GET http://127.0.0.1:8080/{GET%20/actuator/health,%20produces%20[application/vnd.spring-boot.actuator.v2+json
+
+###
+

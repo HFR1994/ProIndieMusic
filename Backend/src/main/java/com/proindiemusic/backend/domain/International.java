@@ -1,7 +1,10 @@
 package com.proindiemusic.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.proindiemusic.backend.pojo.annotations.Date;
+import com.proindiemusic.backend.pojo.annotations.DateTime;
 
 
 @SuppressWarnings("ALL")
@@ -10,17 +13,51 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class International extends Entity {
 
     private String country;
-    private String artistUuid;
-    private String channel;
-    private Long followers;
-    private Boolean verified;
+    private String city;
 
-    public String getType() {
-        return type;
+    private Boolean addToCount;
+
+    @DateTime
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
+    private Date date;
+
+    private Number profit;
+    private String artistUuid;
+
+    public String getCountry() {
+        return country;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Boolean getAddToCount() {
+        return addToCount;
+    }
+
+    public void setAddToCount(Boolean addToCount) {
+        this.addToCount = addToCount;
+    }
+
+    public void setProfit(Number profit) {
+        this.profit = profit;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getArtistUuid() {
@@ -29,30 +66,6 @@ public class International extends Entity {
 
     public void setArtistUuid(String artistUuid) {
         this.artistUuid = artistUuid;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
-
-    public Long getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(Long followers) {
-        this.followers = followers;
-    }
-
-    public Boolean getVerified() {
-        return verified;
-    }
-
-    public void setVerified(Boolean verified) {
-        this.verified = verified;
     }
 
     @Override

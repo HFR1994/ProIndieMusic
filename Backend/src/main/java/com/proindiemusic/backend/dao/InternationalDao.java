@@ -13,9 +13,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class InternationalDao extends DaoTemplate<International> {
 
+    @Autowired
     private Database db;
 
-    @Autowired
     public InternationalDao(Database db) {
         super(db);
     }

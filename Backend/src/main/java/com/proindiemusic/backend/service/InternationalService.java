@@ -21,4 +21,7 @@ public class InternationalService extends ServiceTemplate<International> {
     }
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
+
 }

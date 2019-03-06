@@ -5,8 +5,8 @@ proindiemusic:
     client:
         clientId: 100000001-R8egtlt0Swr422zyYTM78NIPOFAsu03m76uz0eSRoFlPk.oauth2user.aabo.tech
         clientSecret: VCaosuWY4LO2C59vUuGlUyshhybqfZ
-        accessTokenUri: http://localhost:9000/oauth2/token
-        userAuthorizationUri: http://localhost:9000/oauth2/auth
+        accessTokenUri: https://proindiemusic-oauth.mybluemix.net/oauth2/token
+        userAuthorizationUri: https://proindiemusic-oauth.mybluemix.net/oauth2/auth
         clientAuthenticationScheme: form
     resource:
-        userInfoUri: http://localhost:9000/oauth2/user
+        userInfoUri: https://proindiemusic-oauth.mybluemix.net/oauth2/user

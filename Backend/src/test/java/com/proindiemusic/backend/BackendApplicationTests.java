@@ -71,11 +71,26 @@ public class BackendApplicationTests {
 
         db = account.database("proindiemusic", true);
 
-        if(db.listIndexes().jsonIndexes().size() > 0) {
+        if(db.listIndexes().jsonIndexes().size() == 0) {
             //Create indexes
             db.createIndex(JsonIndex.builder().name("ArtistUuid")
                     .designDocument("ArtistUuid")
                     .asc("artistUuid")
+                    .definition());
+            db.createIndex(JsonIndex.builder().name("DateModified")
+                    .designDocument("DateModified")
+                    .asc("dateModified")
+                    .definition());
+        }else if(db.listIndexes().jsonIndexes().size() != 2){
+            db.deleteIndex("ArtistUuid", "ArtistUuid");
+            db.deleteIndex("DateModified", "DateModified");
+            db.createIndex(JsonIndex.builder().name("ArtistUuid")
+                    .designDocument("ArtistUuid")
+                    .asc("artistUuid")
+                    .definition());
+            db.createIndex(JsonIndex.builder().name("DateModified")
+                    .designDocument("DateModified")
+                    .asc("dateModified")
                     .definition());
         }
     }
@@ -101,6 +116,20 @@ public class BackendApplicationTests {
                 Media.class);
 
         System.out.println(movies);
+    }
+
+
+    @Test
+    public void dateIndex() throws IOException{
+        QueryResult<HashMap> data = db.query(new QueryBuilder(and(
+                eq("userAuth", "f6596aee-53ac-4eb9-8c4b-a2b6c5505c68"),
+                eq("table", "artist"))).
+                        useIndex("DateModified", "DateModified").
+                        sort(Sort.desc("dateModified")).
+                        build(),
+                HashMap.class);
+
+        System.out.println(data);
     }
 
     @Test

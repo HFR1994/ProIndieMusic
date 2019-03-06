@@ -237,7 +237,7 @@ public abstract class ServiceTemplate<T> {
                                     }
                                     break;
                                 case "Administrator":
-                                    if (!user.hasRole("ADMIN") || value != null) {
+                                    if (!user.hasRole("ADMIN") && value != null) {
                                         error.add("El usuario "+user.getEmail()+" no tiene permisos de administrador");
                                     }
                                     break;

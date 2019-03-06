@@ -20,12 +20,12 @@ public class Artist extends Entity {
     private String email;
     private String shandraw;
     private String photo;
-    private Float trayectory;
-    private Float costPerPresentation;
-    private Integer internationalConcerts;
-    private Integer concertsPerYear;
-    private Float attendancePerConcert;
-    private Float socialMediaFollowUp;
+    private Object trayectory;
+    private Object costPerPresentation;
+    private Object internationalConcerts;
+    private Object concertsPerYear;
+    private Object attendancePerConcert;
+    private Object socialMediaFollowUp;
     private String liveVideo;
     private String studioVideo;
     private String pressKit;
@@ -102,48 +102,52 @@ public class Artist extends Entity {
         this.shandraw = shandraw;
     }
 
-    public Float getTrayectory() {
+    public Object getTrayectory() {
         return trayectory;
     }
 
-    public void setTrayectory(Float trayectory) {
+    public void setTrayectory(Object trayectory) {
         this.trayectory = trayectory;
     }
 
-    public Float getCostPerPresentation() {
+    public Object getCostPerPresentation() {
         return costPerPresentation;
     }
 
-    public void setCostPerPresentation(Float costPerPresentation) {
+    public void setCostPerPresentation(Object costPerPresentation) {
         this.costPerPresentation = costPerPresentation;
     }
 
-    public Integer getInternationalConcerts() {
+    public Object getInternationalConcerts() {
         return internationalConcerts;
     }
 
-    public void setInternationalConcerts(Integer internationalConcerts) {
+    public void setInternationalConcerts(Object internationalConcerts) {
         this.internationalConcerts = internationalConcerts;
     }
 
-    public Integer getConcertsPerYear() {
+    public Object getConcertsPerYear() {
         return concertsPerYear;
     }
 
-    public void setConcertsPerYear(Integer concertsPerYear) {
+    public void setConcertsPerYear(Object concertsPerYear) {
         this.concertsPerYear = concertsPerYear;
     }
 
-    public Float getAttendancePerConcert() {
+    public Object getAttendancePerConcert() {
         return attendancePerConcert;
     }
 
-    public void setAttendancePerConcert(Float attendancePerConcert) {
+    public void setAttendancePerConcert(Object attendancePerConcert) {
         this.attendancePerConcert = attendancePerConcert;
     }
 
-    public Float getSocialMediaFollowUp() {
+    public Object getSocialMediaFollowUp() {
         return socialMediaFollowUp;
+    }
+
+    public void setSocialMediaFollowUp(Object socialMediaFollowUp) {
+        this.socialMediaFollowUp = socialMediaFollowUp;
     }
 
     public void setSocialMediaFollowUp(Float socialMediaFollowUp) {
