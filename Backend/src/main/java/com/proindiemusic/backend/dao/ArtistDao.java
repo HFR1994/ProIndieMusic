@@ -40,7 +40,7 @@ public class ArtistDao extends DaoTemplate<Artist> {
     public Optional<Artist> getByUser(String artist){
 
         QueryResult<HashMap> data = db.query(new QueryBuilder(and(
-                eq("userAuth", artist),
+                eq("createdBy", artist),
                 eq("table", "artist"))).
                         useIndex("DateModified", "DateModified").
                         sort(Sort.desc("dateModified")).

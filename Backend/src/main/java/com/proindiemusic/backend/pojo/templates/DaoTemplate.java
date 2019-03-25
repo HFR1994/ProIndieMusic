@@ -168,6 +168,7 @@ public abstract class DaoTemplate<T>{
         Field[] fields = klazz.getClass().getDeclaredFields();
         data.put("_id", newUuid);
         data.put("userAuth", user);
+        data.put("createdBy", user);
         data.put("table", value);
 
         for (Field field : fields) {
@@ -229,6 +230,18 @@ public abstract class DaoTemplate<T>{
         data.put("_id", uuid);
         data.put("_rev", rev);
         data.put("userAuth", user);
+        Optional<T> old = getByUuid(uuid);
+        if(old.isPresent()){
+            if(((Entity) old.get()).getAdditionalProperties().get("createdBy") == null){
+                data.put("createdBy", ((Entity) old.get()).getUserAuth());
+            }else{
+                data.put("createdBy", ((Entity) old.get()).getAdditionalProperties().get("createdBy"));
+            }
+        }else{
+            return Optional.empty();
+        }
+
+
         data.put("table", value);
 
         for (Field field : fields) {
