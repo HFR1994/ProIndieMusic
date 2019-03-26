@@ -476,6 +476,7 @@ public abstract class ServiceTemplate<T> {
                                 result.setCode(Result.NOT_MODIFIED);
                                 result.setMessage("¡Alerta! No hubo cambios en el contenido");
                             } else if (cuenta == 0) {
+                                ((Entity) klazz).set_rev(((Entity) current.get()).get_rev());
                                 Optional<T> val = Objects.requireNonNull(getDao()).update(klazz);
                                 if (val.isPresent()) {
                                     addNew(datos,val.get());

@@ -82,17 +82,25 @@ public abstract class DaoTemplate<T>{
                     if (current != null) {
 
                         if (current.getAnnotations().length == 0) {
-                            PropertyUtils.setSimpleProperty(clase, cursor.getKey(), Primitive.getType(current.getType(), cursor.getValue()));
+                            try {
+                                PropertyUtils.setSimpleProperty(clase, cursor.getKey(), Primitive.getType(current.getType(), cursor.getValue()));
+                            }catch(Exception e){
+                                logger.debug(cursor.getKey());
+                            }
                         } else {
                             for (Annotation annotation : current.getAnnotations()) {
-                                if (annotation.annotationType().getSimpleName().equals("Date")) {
-                                    PropertyUtils.setSimpleProperty(clase, cursor.getKey(), Primitive.getType(Timestamp.class, cursor.getValue()));
-                                    break;
-                                } else if (annotation.annotationType().getSimpleName().equals("Date")) {
-                                    PropertyUtils.setSimpleProperty(clase, cursor.getKey(), Primitive.getType(Date.class, cursor.getValue()));
-                                    break;
-                                } else {
-                                    PropertyUtils.setSimpleProperty(clase, cursor.getKey(), Primitive.getType(current.getType(), cursor.getValue()));
+                                if(cursor.getValue() == null){
+                                    PropertyUtils.setSimpleProperty(clase, cursor.getKey(), null);
+                                }else {
+                                    if (annotation.annotationType().getSimpleName().equals("Date")) {
+                                        PropertyUtils.setSimpleProperty(clase, cursor.getKey(), Primitive.getType(Timestamp.class, cursor.getValue()));
+                                        break;
+                                    } else if (annotation.annotationType().getSimpleName().equals("Date")) {
+                                        PropertyUtils.setSimpleProperty(clase, cursor.getKey(), Primitive.getType(Date.class, cursor.getValue()));
+                                        break;
+                                    } else {
+                                        PropertyUtils.setSimpleProperty(clase, cursor.getKey(), Primitive.getType(current.getType(), cursor.getValue()));
+                                    }
                                 }
                             }
                         }
