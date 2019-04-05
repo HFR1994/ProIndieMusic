@@ -168,7 +168,7 @@ public abstract class ServiceTemplate<T> {
 
     }
 
-    private HashMap<String, HashMap<String, Object>> checkData(T klazz, boolean b, User user) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
+    private HashMap<String, HashMap<String, Object>> checkData(T klazz,HashMap<String, Object> data, boolean b, User user) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
 
         HashMap<String, HashMap<String, Object>> datos = new HashMap<>();
         Field[] fields = klazz.getClass().getDeclaredFields();
@@ -197,15 +197,22 @@ public abstract class ServiceTemplate<T> {
 
                 HashSet<String> error = new HashSet<>();
 
-                if(value != null || field.getAnnotations().length != 0) {
+
+
+                if(value != null || field.getAnnotations().length != 0 || data.get(name) != value) {
 
                     boolean check = true;
 
                     if(var.isPresent()) {
                         String current = String.valueOf(PropertyUtils.getProperty(var.get(), field.getName()));
-                        if (current.equals(String.valueOf(value))) {
+                        if (value!=null && current.equals(String.valueOf(value))) {
                             check = false;
                         }
+                    }
+
+                    if(data.get(name) != value){
+                        error.add("Estoy esperando un valor de tipo "+ field.getType().getName().substring(field.getType().getName().lastIndexOf(".")+1));
+                        check = true;
                     }
 
                     if(check) {
@@ -264,7 +271,7 @@ public abstract class ServiceTemplate<T> {
                 }
 
                 if(field.getAnnotation(Password.class) == null){
-                    val.put("value", value);
+                    val.put("value", data.get(name));
                 }else{
                     val.put("value", "");
                 }
@@ -335,7 +342,7 @@ public abstract class ServiceTemplate<T> {
                 if (klazz.getClass() != null) {
                     HashMap<String, HashMap<String, Object>> datos;
                     try {
-                        datos = checkData(klazz, true, user);
+                        datos = checkData(klazz, data, true, user);
                     } catch (NullPointerException | NoSuchFieldException e) {
                         e.printStackTrace();
                         result.setCode(Result.BAD_REQUEST);
@@ -462,7 +469,7 @@ public abstract class ServiceTemplate<T> {
 
                         if (current.isPresent()) {
 
-                            HashMap<String, HashMap<String, Object>> datos = checkData(klazz, false, user);
+                            HashMap<String, HashMap<String, Object>> datos = checkData(klazz, data ,false, user);
 
                             int cuenta = 0;
 

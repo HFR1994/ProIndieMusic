@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.proindiemusic.backend.pojo.annotations.Administrator;
 import com.proindiemusic.backend.pojo.annotations.Email;
+import com.sun.corba.se.spi.ior.ObjectKey;
 
 
 @SuppressWarnings("ALL")
@@ -31,11 +32,11 @@ public class Artist extends Entity {
     private String pressKit;
 
     @Administrator
-    private String level;
+    private Object level;
     @Administrator
-    private Integer sublevel;
+    private Object sublevel;
     @Administrator
-    private Float completeness;
+    private Object completeness;
     @Administrator
     private String review;
     @Administrator
@@ -45,38 +46,6 @@ public class Artist extends Entity {
     @Administrator
     private String step3;
 
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getLiveVideo() {
-        return liveVideo;
-    }
-
-    public void setLiveVideo(String liveVideo) {
-        this.liveVideo = liveVideo;
-    }
-
-    public String getStudioVideo() {
-        return studioVideo;
-    }
-
-    public void setStudioVideo(String studioVideo) {
-        this.studioVideo = studioVideo;
-    }
-
-    public String getPressKit() {
-        return pressKit;
-    }
-
-    public void setPressKit(String pressKit) {
-        this.pressKit = pressKit;
-    }
 
     public String getBandName() {
         return bandName;
@@ -100,6 +69,14 @@ public class Artist extends Entity {
 
     public void setShandraw(String shandraw) {
         this.shandraw = shandraw;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public Object getTrayectory() {
@@ -150,31 +127,51 @@ public class Artist extends Entity {
         this.socialMediaFollowUp = socialMediaFollowUp;
     }
 
-    public void setSocialMediaFollowUp(Float socialMediaFollowUp) {
-        this.socialMediaFollowUp = socialMediaFollowUp;
+    public String getLiveVideo() {
+        return liveVideo;
     }
 
-    public String getLevel() {
+    public void setLiveVideo(String liveVideo) {
+        this.liveVideo = liveVideo;
+    }
+
+    public String getStudioVideo() {
+        return studioVideo;
+    }
+
+    public void setStudioVideo(String studioVideo) {
+        this.studioVideo = studioVideo;
+    }
+
+    public String getPressKit() {
+        return pressKit;
+    }
+
+    public void setPressKit(String pressKit) {
+        this.pressKit = pressKit;
+    }
+
+    public Object getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(Object level) {
         this.level = level;
     }
 
-    public Integer getSublevel() {
+    public Object getSublevel() {
         return sublevel;
     }
 
-    public void setSublevel(Integer sublevel) {
+    public void setSublevel(Object sublevel) {
         this.sublevel = sublevel;
     }
 
-    public Float getCompleteness() {
+    public Object getCompleteness() {
         return completeness;
     }
 
-    public void setCompleteness(Float completeness) {
+    public void setCompleteness(Object completeness) {
         this.completeness = completeness;
     }
 

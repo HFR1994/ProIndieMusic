@@ -48,16 +48,20 @@ public class International extends Entity {
         this.addToCount = addToCount;
     }
 
-    public void setProfit(Number profit) {
-        this.profit = profit;
-    }
-
     public Date getDate() {
         return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Number getProfit() {
+        return profit;
+    }
+
+    public void setProfit(Number profit) {
+        this.profit = profit;
     }
 
     public String getArtistUuid() {
