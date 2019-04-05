@@ -288,7 +288,7 @@ public abstract class ServiceTemplate<T> {
 
                 for (Map.Entry<String, Object> entry : properties.entrySet()) {
                     HashMap<String, Object> val = new HashMap<>();
-                    val.put("changed", current.get(entry.getKey()) == entry.getValue());
+                    val.put("changed", current.get(entry.getKey()) != entry.getValue());
                     val.put("value", entry.getValue());
                     val.put("error", new HashSet<>());
                     datos.put(entry.getKey(), val);

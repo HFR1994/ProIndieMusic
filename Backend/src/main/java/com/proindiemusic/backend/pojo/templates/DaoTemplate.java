@@ -256,13 +256,13 @@ public abstract class DaoTemplate<T>{
             field.setAccessible(true);
 
             String name = field.getName().substring(0, 1).toLowerCase() + field.getName().substring(1);
+            data.put(name, PropertyUtils.getProperty(klazz, name));
 
-            if (name.equalsIgnoreCase("additionalProperties")) {
-                data.putAll(((Entity) klazz).getProperties());
-            } else {
-                data.put(name, PropertyUtils.getProperty(klazz, name));
-            }
+        }
+        HashMap<String, Object> properties = (HashMap<String, Object>) PropertyUtils.getProperty(klazz, "additionalProperties");
 
+        for (Map.Entry<String, Object> entry : properties.entrySet()) {
+            data.put(entry.getKey(), entry.getValue());
         }
         data.put("dateModified", dateTime.format(new Date()));
 
