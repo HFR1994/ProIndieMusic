@@ -1,10 +1,12 @@
 package tech.aabo.celulascontentas.oauth.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.plus.Plus;
 import com.google.api.services.plus.model.Person;
+import com.google.common.io.CharStreams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +29,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.Math.toIntExact;
 
@@ -109,13 +108,10 @@ public class GoogleOAuth2Filter{
         return null;
     }
 
-    public void authorizationCode(HttpServletRequest request, HttpServletResponse response, String cred, ArrayList<String> scopes){
-        Map<String, String[]> query = request.getParameterMap();
+    public void authorizationCode(String code, HttpServletRequest request, HttpServletResponse response, String cred, ArrayList<String> scopes){
         CommonTools.eraseCookies(response, request.getCookies());
 
         try {
-            String code = query.get("code")[0];
-
             if (code != null) {
 
                 GoogleClientSecrets clientSecrets = commonTools.loadSecret();

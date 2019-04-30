@@ -1,8 +1,12 @@
 package tech.aabo.celulascontentas.oauth;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.auth.oauth2.AuthorizationCodeResponseUrl;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.common.io.CharStreams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,6 +29,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -94,15 +101,21 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
         SpringApplication.run(OauthApplication.class, args);
     }
 
-    @RequestMapping(value = "/oauth2/token", method = RequestMethod.POST)
-    public void token(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, String[]> query = request.getParameterMap();
+    @Bean
+    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowUrlEncodedSlash(true);
+        return firewall;
+    }
 
-        CommonTools.printMap(query);
-        try {
-            String grant_type = query.get("grant_type")[0];
-            String client_id = query.get("client_id")[0];
-            String client_secret = query.get("client_secret")[0];
+    @RequestMapping(value = "/oauth2/token", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void token(HttpServletRequest request, HttpServletResponse response) {
+
+        try{
+            HashMap<String, String> query = new ObjectMapper().readValue(CharStreams.toString(request.getReader()), HashMap.class);
+            String grant_type = query.get("grant_type");
+            String client_id = query.get("client_id");
+            String client_secret = query.get("client_secret");
             ArrayList<String> scopes;
 
             if(query.containsKey("scope")){
@@ -128,9 +141,10 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
                     } else {
                         switch (grant_type) {
                             case "authorization_code":
-                                Result<String> redirect_uri = clientDao.validateRedirect(cred.getUuid(), query.get("redirect_uri")[0]);
+                                Result<String> redirect_uri = clientDao.validateRedirect(cred.getUuid(), query.get("redirect_uri"));
                                 if(redirect_uri.getData() != null) {
-                                    googleOAuth2Filter.authorizationCode(request, response, cred.getUuid(), scopes);
+                                    String code = (String) query.get("code");
+                                    googleOAuth2Filter.authorizationCode(code ,request, response, cred.getUuid(), scopes);
                                 }else{
                                     CommonTools.setResponse(response, redirect_uri.getMessage(), redirect_uri.getCode());
                                 }
@@ -148,17 +162,19 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
         }catch(NullPointerException e) {
             e.printStackTrace();
             CommonTools.setResponse(response, "Missing required parameters", HttpServletResponse.SC_BAD_REQUEST);
+        } catch (IOException e) {
+            e.printStackTrace();
+            CommonTools.setResponse(response, "Not a valid JSON response", HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
-    @RequestMapping(value = "/oauth2/user/password", method = RequestMethod.POST)
+    @RequestMapping(value = "/oauth2/user/password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void addPassword(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, String[]> query = request.getParameterMap();
 
-        CommonTools.printMap(query);
         try {
-            String email = query.get("email")[0];
-            String password = query.get("password")[0];
+            HashMap<String, String> query = new ObjectMapper().readValue(CharStreams.toString(request.getReader()), HashMap.class);
+            String email = query.get("email");
+            String password = query.get("password");
 
             Result resl = userAuthorizationDao.updatePssword(email, password);
 
@@ -167,21 +183,24 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
         }catch(NullPointerException e) {
             e.printStackTrace();
             CommonTools.setResponse(response, "Missing required parameters", HttpServletResponse.SC_BAD_REQUEST);
+        } catch (IOException e) {
+            e.printStackTrace();
+            CommonTools.setResponse(response, "Not a valid JSON response", HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
-    @RequestMapping(value = "/oauth2/client", method = RequestMethod.POST)
+    @RequestMapping(value = "/oauth2/client", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void addClient(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, String[]> query = request.getParameterMap();
 
         try {
+            HashMap<String, String> query = new ObjectMapper().readValue(CharStreams.toString(request.getReader()), HashMap.class);
             if (query.isEmpty()) {
                 CommonTools.setResponse(response, "Missing required parameters", HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 Client client = new Client();
 
-                client.setFullName(query.get("fullName")[0]);
-                client.setcEmail(query.get("email")[0]);
+                client.setFullName(query.get("fullName"));
+                client.setcEmail(query.get("email"));
                 client.setRedirects(query.get("redirect_uri"));
                 client.setVerifiedCEmail(true);
 
@@ -222,19 +241,23 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
             }
         }catch(NullPointerException e){
             CommonTools.setResponse(response, "Missing required parameters", HttpServletResponse.SC_BAD_REQUEST);
+        } catch (IOException e) {
+            e.printStackTrace();
+            CommonTools.setResponse(response, "Not a valid JSON response", HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
-    @RequestMapping(value = "/oauth2/auth", method = RequestMethod.POST)
+    @RequestMapping(value = "/oauth2/auth", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void localAuthenticate(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, String[]> query = request.getParameterMap();
+
 
         try {
-            String client = query.get("client_id")[0];
-            String redirect_uri = query.get("redirect_uri")[0];
-            String state = query.get("state")[0];
-            String email = query.get("email")[0];
-            String password = query.get("password")[0];
+            HashMap query = new ObjectMapper().readValue(CharStreams.toString(request.getReader()), HashMap.class);
+            String client = (String) query.get("client_id");
+            String redirect_uri = (String) query.get("redirect_uri");
+            String state = (String) query.get("state");
+            String email = (String) query.get("email");
+            String password = (String) query.get("password");
 
             Client cred = commonTools.validateCredentials(response, client);
 
@@ -277,10 +300,13 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
         }catch(NullPointerException e) {
             e.printStackTrace();
             CommonTools.setResponse(response, "Missing required parameters", HttpServletResponse.SC_BAD_REQUEST);
+        } catch (IOException e) {
+            e.printStackTrace();
+            CommonTools.setResponse(response, "Not a valid JSON response", HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
-    @RequestMapping("/oauth2/auth")
+    @RequestMapping(value = "/oauth2/auth", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void authenticate(HttpServletRequest request, HttpServletResponse response) {
 
         HashMap<String, String> query = CommonTools.getQueryMap(request.getQueryString());
@@ -378,7 +404,7 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
         }
     }
 
-    @RequestMapping(value = "/oauth2/user", method = RequestMethod.GET)
+    @RequestMapping(value = "/oauth2/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void account(HttpServletResponse response, Authentication authentication) {
 
         User user = (User) authentication.getPrincipal();
@@ -434,31 +460,30 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
 
     }
 
-    @RequestMapping(value = "/oauth2/user", method = RequestMethod.POST)
+    @RequestMapping(value = "/oauth2/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void register(HttpServletRequest request, HttpServletResponse response) {
 
-        Map<String, String[]> query = request.getParameterMap();
-
         try {
+            HashMap<String, String> query = new ObjectMapper().readValue(CharStreams.toString(request.getReader()), HashMap.class);
             if (query.isEmpty()) {
                 CommonTools.setResponse(response, "Missing required parameters", HttpServletResponse.SC_BAD_REQUEST);
             } else {
                 User user = new User();
 
-                user.setEmail(query.get("email")[0]);
+                user.setEmail(query.get("email"));
                 user.setVerifiedEmail(true);
-                user.setName(query.get("name")[0]);
+                user.setName(query.get("name"));
                 user.setStatus(true);
 
-                if(query.get("picture")[0] != null){
-                    user.setPictureURL(query.get("picture")[0]);
+                if(query.get("picture") != null){
+                    user.setPictureURL(query.get("picture"));
                 }else{
                     user.setPictureURL("https://avatars.servers.getgo.com/2205256774854474505_medium.jpg");
                 }
 
-                user.setLocale(query.get("locale")[0]);
-                user.setGivenName(query.get("firstName")[0]);
-                user.setFamilyName(query.get("lastName")[0]);
+                user.setLocale(query.get("locale"));
+                user.setGivenName(query.get("firstName"));
+                user.setFamilyName(query.get("lastName"));
 
                 Result<Boolean> res = userDao.insertUser(user);
 
@@ -467,8 +492,8 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
                 } else {
                     try {
 
-                        String email = query.get("email")[0];
-                        String password = query.get("password")[0];
+                        String email = query.get("email");
+                        String password = query.get("password");
 
                         Result resl = userAuthorizationDao.updatePssword(email, password);
 
@@ -505,11 +530,15 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
             }
         }catch(NullPointerException e){
             CommonTools.setResponse(response, "Missing required parameters", HttpServletResponse.SC_BAD_REQUEST);
+        } catch (IOException e) {
+            e.printStackTrace();
+            CommonTools.setResponse(response, "Not a valid JSON response", HttpServletResponse.SC_BAD_REQUEST);
         }
+
 
     }
 
-    @RequestMapping("/oauth2/revoke")
+    @RequestMapping(value = "/oauth2/revoke", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void logout(HttpServletRequest request, HttpServletResponse response) {
 
         HashMap<String, String> query = CommonTools.getQueryMap(request.getQueryString());
