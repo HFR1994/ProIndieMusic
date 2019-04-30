@@ -7,9 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ef58fc64-eb36-4131-9f4f-7241d2ff9298" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/OAuth2/start.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/security/JwtAuthorizationTokenFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/security/JwtAuthorizationTokenFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/start.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OAuth2/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/OAuth2/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/OauthApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/OauthApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/filter/GoogleOAuth2Filter.java" beforeDir="false" afterPath="$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/filter/GoogleOAuth2Filter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/oauth_jar/oauth.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/oauth_jar/oauth.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/OAuth2/target/" />
@@ -64,20 +67,47 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/OauthApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="91">
-              <caret line="411" selection-start-line="411" selection-end-line="411" />
+            <state relative-caret-position="143">
+              <caret line="308" column="33" selection-start-line="308" selection-start-column="33" selection-end-line="308" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/config/DemoCorsFilter.java">
+        <entry file="file://$PROJECT_DIR$/OAuth2/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="33" selection-start-line="33" selection-end-line="33" />
+            <state relative-caret-position="90">
+              <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Backend/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-720">
+              <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/security/JwtAuthorizationTokenFilter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="173">
+              <caret line="63" column="68" selection-start-line="63" selection-start-column="68" selection-end-line="63" selection-end-column="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/OAuth2/start.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="31" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -144,7 +174,6 @@
         <option value="$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/domain/User.java" />
         <option value="$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/pojo/CommonTools.java" />
         <option value="$PROJECT_DIR$/OAuth2/.gitignore.merge" />
-        <option value="$PROJECT_DIR$/OAuth2/pom.xml" />
         <option value="$PROJECT_DIR$/OAuth2/Dockerfile" />
         <option value="$PROJECT_DIR$/OAuth2/manifest.yml" />
         <option value="$PROJECT_DIR$/Backend/src/main/resources/config.properties" />
@@ -158,7 +187,6 @@
         <option value="$PROJECT_DIR$/OAuth2/.gitignore" />
         <option value="$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/pojo/types/Primitive.java" />
         <option value="$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/endpoint/ArtistEndpoint.java" />
-        <option value="$PROJECT_DIR$/Backend/start.sh" />
         <option value="$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/dao/ArtistDao.java" />
         <option value="$PROJECT_DIR$/Backend/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/domain/International.java" />
@@ -169,7 +197,11 @@
         <option value="$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/pojo/templates/ServiceTemplate.java" />
         <option value="$PROJECT_DIR$/OAuth2/src/main/resources/application.yml" />
         <option value="$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/filter/GoogleOAuth2Filter.java" />
+        <option value="$PROJECT_DIR$/OAuth2/start.sh" />
         <option value="$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/OauthApplication.java" />
+        <option value="$PROJECT_DIR$/OAuth2/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/start.sh" />
+        <option value="$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/security/JwtAuthorizationTokenFilter.java" />
       </list>
     </option>
   </component>
@@ -233,28 +265,6 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="ProIndieMusic" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OAuth2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProIndieMusic" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OAuth2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProIndieMusic" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OAuth2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProIndieMusic" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OAuth2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -283,6 +293,7 @@
       <recent name="com.proindiemusic.backend.domain" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/OAuth2" />
       <recent name="$PROJECT_DIR$/Backend" />
     </key>
   </component>
@@ -388,7 +399,7 @@
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22961374" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22961374" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -409,7 +420,7 @@
       <window_info anchor="bottom" id="Java Enterprise" order="13" />
       <window_info anchor="bottom" id="Database Changes" order="14" />
       <window_info anchor="bottom" id="Version Control" order="15" weight="0.3299363" />
-      <window_info active="true" anchor="bottom" id="Run Dashboard" order="16" visible="true" weight="0.43312103" />
+      <window_info anchor="bottom" id="Run Dashboard" order="16" visible="true" weight="0.43312103" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -423,6 +434,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -487,10 +508,10 @@
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/OauthApplication.java</url>
-          <line>447</line>
+          <url>file://$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/security/JwtAuthorizationTokenFilter.java</url>
+          <line>68</line>
           <properties />
-          <option name="timeStamp" value="15" />
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -551,27 +572,10 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/OAuth2/cli-config.yml" />
-    <entry file="file://$PROJECT_DIR$/OAuth2/Jenkinsfile" />
-    <entry file="file://$PROJECT_DIR$/OAuth2/manifest.yml" />
-    <entry file="file://$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/service/InternationalService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="25" column="4" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Backend/src/main/resources/config.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="57" selection-start-column="57" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/security/JwtAuthorizationTokenFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-82">
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -685,34 +689,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1575">
-          <caret line="105" selection-start-line="105" selection-end-line="105" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OAuth2/Dockerfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="77" selection-start-line="5" selection-start-column="69" selection-end-line="5" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/start.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="30" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OAuth2/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="63" column="55" selection-start-line="63" selection-start-column="50" selection-end-line="63" selection-end-column="55" />
         </state>
       </provider>
     </entry>
@@ -939,19 +915,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/pojo/CommonTools.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="95" column="23" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/config/DemoCorsFilter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="33" selection-start-line="33" selection-end-line="33" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OAuth2/mvnw">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="9" lean-forward="true" selection-start-column="9" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OAuth2/src/main/resources/client_secret.json">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/OAuth2/src/main/resources/application.yml">
       <provider selected="true" editor-type-id="text-editor">
@@ -960,17 +939,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Backend/src/main/resources/application.yml">
+    <entry file="file://$PROJECT_DIR$/OAuth2/src/main/resources/config.properties">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/pojo/CommonTools.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="62" selection-start-line="11" selection-start-column="62" selection-end-line="11" selection-end-column="62" />
+        <state relative-caret-position="71">
+          <caret line="95" column="23" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/OAuth2/src/main/java/tech/aabo/celulascontentas/oauth/OauthApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="411" selection-start-line="411" selection-end-line="411" />
+        <state relative-caret-position="143">
+          <caret line="308" column="33" selection-start-line="308" selection-start-column="33" selection-end-line="308" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OAuth2/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="77" selection-start-line="5" selection-start-column="69" selection-end-line="5" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OAuth2/start.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="31" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OAuth2/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/start.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="108" selection-start-line="6" selection-start-column="108" selection-end-line="6" selection-end-column="108" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-720">
+          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backend/src/main/java/com/proindiemusic/backend/security/JwtAuthorizationTokenFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="63" column="68" selection-start-line="63" selection-start-column="68" selection-end-line="63" selection-end-column="68" />
         </state>
       </provider>
     </entry>

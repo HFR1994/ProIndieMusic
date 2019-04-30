@@ -306,6 +306,11 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
         }
     }
 
+    @RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void ping(HttpServletRequest request, HttpServletResponse response) {
+        CommonTools.setResponse(response, "pong", 200);
+    }
+
     @RequestMapping(value = "/oauth2/auth", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void authenticate(HttpServletRequest request, HttpServletResponse response) {
 
@@ -574,7 +579,7 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/oauth2/revoke", "/oauth2/auth","/error**").permitAll()
+                .antMatchers(HttpMethod.GET, "/","/oauth2/revoke", "/oauth2/auth","/error**").permitAll()
                 .antMatchers(HttpMethod.POST,"/oauth2/user","/oauth2/token", "/oauth2/client", "/oauth2/auth", "/oauth2/user/password").permitAll()
                 .anyRequest().authenticated()
                 .and()

@@ -4,4 +4,4 @@ git push origin master
 mvn install
 docker tag proindiemusic/backend frhec/proindiemusic-backend
 docker push frhec/proindiemusic-backend
-ibmcloud cf push proindiemusic-backend --docker-image frhec/proindiemusic-backend -i 1 -m 512MB
+ibmcloud cf push proindiemusic-backend --docker-image frhec/proindiemusic-backend -i 1 -m 512MB -u port 9000

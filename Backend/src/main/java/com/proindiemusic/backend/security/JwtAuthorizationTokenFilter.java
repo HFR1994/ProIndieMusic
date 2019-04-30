@@ -61,7 +61,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
 
-            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Authorization", "Bearer "+authToken);
 
             int status = con.getResponseCode();
