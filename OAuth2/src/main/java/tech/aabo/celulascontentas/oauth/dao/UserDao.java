@@ -131,6 +131,7 @@ public class UserDao {
 
     public Result<Boolean> insertUser(User user) {
 
+
         Result<Boolean> res = new Result<>();
         String uuid=UUID.randomUUID().toString();
         user.setUserUuid(uuid);

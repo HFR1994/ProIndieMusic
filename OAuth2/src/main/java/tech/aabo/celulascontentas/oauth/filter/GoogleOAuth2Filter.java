@@ -64,10 +64,8 @@ public class GoogleOAuth2Filter{
 
     private JSONObject values;
 
-    public Authentication refreshToken(HttpServletRequest request, HttpServletResponse response, String cred){
-        Map<String, String[]> query = request.getParameterMap();
-
-        String refresh_token = query.get("refresh_token")[0];
+    public Authentication refreshToken(HttpServletResponse response, HashMap<String, String> query, String cred) {
+        String refresh_token = query.get("refresh_token");
 
         try {
             if (refresh_token == null || refresh_token.length()==0) {

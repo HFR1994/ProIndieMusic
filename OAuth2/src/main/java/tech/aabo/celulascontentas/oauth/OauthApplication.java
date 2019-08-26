@@ -150,7 +150,7 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
                                 }
                                 break;
                             case "refresh_token":
-                                googleOAuth2Filter.refreshToken(request, response, cred.getUuid());
+                                googleOAuth2Filter.refreshToken(response, query ,cred.getUuid());
                                 break;
                             default:
                                 CommonTools.setResponse(response,"Invalid grant_type parameter", HttpServletResponse.SC_BAD_REQUEST);
@@ -469,7 +469,8 @@ public class OauthApplication extends WebSecurityConfigurerAdapter {
     public void register(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            HashMap<String, String> query = new ObjectMapper().readValue(CharStreams.toString(request.getReader()), HashMap.class);
+            String text = CharStreams.toString(request.getReader());
+            HashMap<String, String> query = new ObjectMapper().readValue(text, HashMap.class);
             if (query.isEmpty()) {
                 CommonTools.setResponse(response, "Missing required parameters", HttpServletResponse.SC_BAD_REQUEST);
             } else {
